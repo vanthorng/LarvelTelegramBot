@@ -79,8 +79,8 @@ class TelegramController extends Controller
     public function sendFileToTelegram($id)
     {
         $file = TelegramFile::findOrFail($id);
-        // $chatId = '443149454'; // Replace with your Telegram chat ID
-        $chatId = '-4199375602'; // Replace with your Telegram Group ID
+        $chatId = '443149454'; // Replace with your Telegram chat ID
+        // $chatId = '-4199375602'; // Replace with your Telegram Group ID
 
         // Pull the file content from S3
         $fileContent = Storage::disk('s3')->get($file->file_path);
@@ -91,6 +91,7 @@ class TelegramController extends Controller
 
         // Wrap it with InputFile
         $telegramFile = InputFile::create($tempPath, $file->original_name);
+        log::info([$telegramFile]);
 
         // Send to Telegram
         Telegram::sendDocument([
