@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TelegramController;
+use App\Http\Controllers\BotController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,5 +20,22 @@ Route::post('/telegram/files', [TelegramController::class, 'storeFile'])->name('
 Route::get('/telegram/files/{id}', [TelegramController::class, 'show'])->name('telegram.show');
 Route::delete('/telegram/files/{id}', [TelegramController::class, 'destroy'])->name('telegram.destroy');
 Route::post('/telegram/files/send/{id}', [TelegramController::class, 'sendFileToTelegram'])->name('telegram.send');
+Route::post('/telegram/chat-info', [TelegramController::class, 'getChatInfo']);
+
+//
+// Bot information and management
+Route::get('/bot/info', [BotController::class, 'show']);
+Route::post('/bot/webhook/set', [BotController::class, 'setWebhook']);
+Route::delete('/bot/webhook', [BotController::class, 'removeWebhook']);
+Route::get('/bot/webhook/info', [BotController::class, 'getWebhookInfo']);
+
+// Webhook handler
+Route::post('/telegram/webhook', [BotController::class, 'webhook']);
+
+// Testing endpoints
+Route::get('/bot/updates', [BotController::class, 'getUpdates']);
+Route::post('/bot/send-message', [BotController::class, 'sendTestMessage']);
+Route::post('/bot/send-photo', [BotController::class, 'sendPhoto']);
+Route::post('/bot/send-document', [BotController::class, 'sendDocument']);
 
 
